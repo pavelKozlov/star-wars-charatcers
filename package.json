@@ -7,7 +7,19 @@
     "axios-mock-adapter": "^1.15.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "^3.4.1"
+    "react-redux": "^7.2.0",
+    "react-scripts": "^3.4.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "node-sass": "^4.14.1",
+    "prettier": "^2.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,5 +35,17 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.jsx?": [
+      "yarn run lint:prettier",
+      "yarn run lint:fix",
+      "git add"
+    ]
+  }
 }

@@ -1,0 +1,13 @@
+## editors
+/.idea
+/.vscode
+
+## system files
+.DS_Store
+
+## dependencies
+/node_modules*
+/npm-debug.log
+
+package-lock.json
+yarn.lock

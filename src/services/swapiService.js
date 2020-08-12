@@ -1,4 +1,5 @@
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../mock-client/MockAxios.js';
 import {API_ENDPOINT, API_PROTOCOL} from '../constants/appConstants.js';
 
 const PROPS_TO_IGNORE = ['url'];

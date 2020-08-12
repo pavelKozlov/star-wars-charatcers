@@ -1,8 +1,12 @@
 import { FETCH_PEOPLE_STARTED, FETCH_PEOPLE_SUCCEEDED, FETCH_PEOPLE_FAILED } from './people.actionConsts.js';
 import { stripPeople } from './people.utils.js';
 
+const ITEMS_PER_PAGE = 10;
+
 const initialState = {
   value: [],
+  selectedPage: -1,
+  totalPages: 0,
   isLoading: false,
   isError: false,
 };
@@ -29,15 +33,15 @@ const reducer = (state = initialState, action) => {
       newState = {
         ...state,
         isLoading: false,
-        value: stripPeople(action.payload),
+        selectedPage: action.payload.pageNumber,
+        totalPages: Math.ceil(action.payload.total / ITEMS_PER_PAGE),
+        value: stripPeople(action.payload.results),
       };
       break;
     case FETCH_PEOPLE_FAILED:
       newState = {
-        ...state,
-        value: [],
-        isLoading: false,
-        isError: true
+        ...initialState,
+        isError: true,
       };
       break;
     default:

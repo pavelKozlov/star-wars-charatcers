@@ -73,11 +73,16 @@ const parseResources = async (data) =>
 /**
  * Get people the list of people from the endpoint.
  *
+ * @param {Number} pageNumber - The number of the page to fetch
  * @returns {Promise}
  */
-const getPeople = async () => {
-  const {data} = await instance.get('/people');
-  return parseResources(data.results);
+const getPeople = async (pageNumber) => {
+  const {data} = await instance.get(`/people/?page=${pageNumber}`);
+  const results = await parseResources(data.results);
+  return {
+    results,
+    total: data.count,
+  }
 };
 
 export const swapiService = {

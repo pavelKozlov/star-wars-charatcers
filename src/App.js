@@ -5,6 +5,7 @@ import './App.scss';
 
 import {Spinner} from './components/spinner/index.js';
 import { PeopleList } from './components/peopleList/index.js';
+import { Pagination } from './components/pagination/index.js';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,12 @@ const App = () => {
   return (
     <div className="App">
       {
-        isLoading ? <Spinner/> : <PeopleList items={peopleItems} />
+        isLoading ? <Spinner/> : (
+          <>
+            <Pagination/>
+            <PeopleList items={peopleItems} />
+          </>
+        )
       }
     </div>
   );

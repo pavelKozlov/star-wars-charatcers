@@ -9,7 +9,7 @@ import './peopleOverview.scss';
  * @returns {*}
  * @constructor
  */
-const PeopleOverview = ({ totalPages, selectedPage, selectPage, peopleItems}) => (
+const PeopleOverview = ({ totalPages, selectedPage, selectPage, peopleItems }) => (
   <div className="people-overview">
     <Pagination {...{
       totalPages,

@@ -1,15 +1,21 @@
-// import axios from 'axios';
-import axios from '../mock-client/MockAxios.js';
+import axios from 'axios';
+// import axios from '../mock-client/MockAxios.js';
 import {API_ENDPOINT, API_PROTOCOL} from '../constants/appConstants.js';
 
 const PROPS_TO_IGNORE = ['url'];
 const cache = new Map();
 
+const instance = axios.create({
+  baseURL: `${API_PROTOCOL}://${API_ENDPOINT}`,
+});
+
 const loadResource = async (resource) => {
-  if (!cache.has(resource)) {
-    cache.set(resource, axios.get(resource));
+  const regexp = new RegExp(`^http(s)?://${API_ENDPOINT}/`);
+  const nakedResource = resource.replace(regexp, '');
+  if (!cache.has(nakedResource)) {
+    cache.set(nakedResource, instance.get(nakedResource));
   }
-  return cache.get(resource);
+  return cache.get(nakedResource);
 };
 
 const resolveResource = async (resource) => {
@@ -70,7 +76,7 @@ const parseResources = async (data) =>
  * @returns {Promise}
  */
 const getPeople = async () => {
-  const {data} = await axios.get(`${API_PROTOCOL}://${API_ENDPOINT}/people`);
+  const {data} = await instance.get('/people');
   return parseResources(data.results);
 };
 

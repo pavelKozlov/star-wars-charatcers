@@ -1,18 +1,27 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {fetchPeople} from './state/people/people.actions.js';
+
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Factris Technical Assignment
-          </p>
-        </header>
-      </div>
-    );
-  }
+const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // componentDidMount
+    dispatch(fetchPeople());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>
+          Factris Technical Assignment
+        </p>
+      </header>
+    </div>
+  );
 }
 
-export default App;
+export {App};

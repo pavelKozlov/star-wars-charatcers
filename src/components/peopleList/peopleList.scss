@@ -1,0 +1,22 @@
+.people-list {
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 0 2px 0, rgba(0, 0, 0, 0.24) 0 2px 2px 0;
+  background-color: #ffffff;
+  max-height: 90vh;
+
+  &__list-container {
+    height: calc(100% - 60px);
+  }
+
+  &__list-content {
+    list-style-type: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 0;
+    height: 100%;
+    overflow: auto;
+  }
+}

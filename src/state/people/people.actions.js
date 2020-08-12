@@ -16,6 +16,7 @@ const fetchPeople = () => async (dispatch) => {
     const data = await swapiService.getPeople();
     await dispatch({ type: FETCH_PEOPLE_SUCCEEDED, payload: data });
   } catch (e) {
+    console.error(e);
     dispatch({ type: FETCH_PEOPLE_FAILED });
   }
 };

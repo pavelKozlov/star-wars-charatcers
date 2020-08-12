@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {fetchPeople} from './state/people/people.actions.js';
+import './App.scss';
 
-import './App.css';
+import { PeopleList } from './components/peopleList/index.js';
 
 const App = () => {
   const dispatch = useDispatch();
+
+  const peopleItems = useSelector((state) => state.people.value);
 
   useEffect(() => {
     // componentDidMount
@@ -15,13 +18,14 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
+      {/*<header className="App-header">
         <p>
           Factris Technical Assignment
         </p>
-      </header>
+      </header>*/}
+      <PeopleList items={peopleItems} />
     </div>
   );
-}
+};
 
 export {App};

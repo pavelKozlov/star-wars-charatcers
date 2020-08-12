@@ -1,0 +1,104 @@
+$cell-padding: 10px;
+$cell-padding-mobile: 5px;
+
+.people-list-row {
+  display: flex;
+  flex-direction: row;
+  height: 70px;
+  border-bottom: 1px solid #dedede;
+  align-items: center;
+  font-size: 16px;
+
+  &__column {
+    text-align: center;
+    padding: $cell-padding;
+    overflow: auto;
+    max-height: calc(100% - 2 * #{$cell-padding});
+  }
+
+  &__column-name {
+    min-width: 150px;
+    flex-grow: 1;
+  }
+
+  &__column-birth-year {
+    min-width: 100px;
+    max-width: 100px;
+  }
+
+  &__column-home-world {
+    min-width: 150px;
+    max-width: 150px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__column-species {
+    min-width: 150px;
+    max-width: 150px;
+  }
+
+  &__column-film-title {
+    min-width: 150px;
+    max-width: 150px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .people-list-row {
+    &__column-name {
+      min-width: 80px;
+    }
+
+    &__column-home-world {
+      min-width: 100px;
+      max-width: 100px;
+    }
+
+    &__column-species {
+      min-width: 100px;
+      max-width: 100px;
+    }
+
+    &__column-film-title {
+      min-width: 100px;
+      max-width: 100px;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .people-list-row {
+    height: 50px;
+    font-size: 12px;
+
+    &__column {
+      padding: $cell-padding-mobile;
+    }
+
+    &__column-name {
+      min-width: 50px;
+      max-width: 80px;
+    }
+
+    &__column-birth-year {
+      min-width: 50px;
+      max-width: 80px;
+    }
+
+    &__column-home-world {
+      min-width: 50px;
+      max-width: 80px;
+    }
+
+    &__column-species {
+      min-width: 60px;
+      max-width: 80px;
+    }
+
+    &__column-film-title {
+      min-width: 60px;
+      max-width: 80px;
+    }
+  }
+}

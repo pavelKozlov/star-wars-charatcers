@@ -1,4 +1,5 @@
 import { FETCH_PEOPLE_STARTED, FETCH_PEOPLE_SUCCEEDED, FETCH_PEOPLE_FAILED } from './people.actionConsts.js';
+import { stripPeople } from './people.utils.js';
 
 const initialState = {
   value: [],
@@ -28,7 +29,7 @@ const reducer = (state = initialState, action) => {
       newState = {
         ...state,
         isLoading: false,
-        value: action.payload,
+        value: stripPeople(action.payload),
       };
       break;
     case FETCH_PEOPLE_FAILED:

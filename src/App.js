@@ -4,13 +4,10 @@ import {fetchPeople} from './state/people/people.actions.js';
 import './App.scss';
 
 import {Spinner} from './components/spinner/index.js';
-import { PeopleList } from './components/peopleList/index.js';
-import { Pagination } from './components/pagination/index.js';
+import { Dashboard } from './components/dashboard/index.js';
 
 const App = () => {
   const dispatch = useDispatch();
-
-  const peopleItems = useSelector((state) => state.people.value);
   const isLoading = useSelector((state) => state.people.isLoading);
 
   useEffect(() => {
@@ -20,15 +17,15 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div className="app">
       {
-        isLoading ? <Spinner/> : (
-          <>
-            <Pagination/>
-            <PeopleList items={peopleItems} />
-          </>
+        isLoading && (
+          <div className="app__spinner-container">
+            <Spinner/>
+          </div>
         )
       }
+      <Dashboard />
     </div>
   );
 };

@@ -24,7 +24,6 @@ const reducer = (state = initialState, action) => {
     case FETCH_PEOPLE_STARTED:
       newState = {
         ...state,
-        value: [],
         isLoading: true,
         isError: false,
       };

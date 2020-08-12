@@ -12,15 +12,15 @@ const Pagination = ({totalPages, selectedPage, selectPage}) => {
   const pages = new Array(totalPages).fill(0).map((_, index) => index + 1);
 
   return (
-    <div>
+    <div className="pagination">
       <ul>
         {pages.map((pageNumber) => (
           <button
             key={pageNumber}
             onClick={() => selectPage(pageNumber)}
             className={classnames({
-              'pagination-button': true,
-              'pagination-button--selected': pageNumber === selectedPage,
+              'pagination__button': true,
+              'pagination__button--selected': pageNumber === selectedPage,
             })}
           >
             {pageNumber}

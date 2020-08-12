@@ -1,6 +1,8 @@
-.pagination-button {
-  &--selected {
-    pointer-events: none;
-    background-color: #ADD8E6;
+.pagination {
+  &__button {
+    &--selected {
+      pointer-events: none;
+      background-color: #ADD8E6;
+    }
   }
 }

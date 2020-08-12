@@ -1,1 +1,1 @@
-export { Dashboard } from './Dashboard.jsx';
+export { DashboardContainer as Dashboard } from './Dashbaord.container.jsx';

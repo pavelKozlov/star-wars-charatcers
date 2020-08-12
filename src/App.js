@@ -4,7 +4,7 @@ import {fetchPeople} from './state/people/people.actions.js';
 import './App.scss';
 
 import {Spinner} from './components/spinner/index.js';
-import { Dashboard } from './components/dashboard/index.js';
+import { PeopleOverview } from './components/peopleOverview/index.js';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const App = () => {
           </div>
         )
       }
-      <Dashboard />
+      <PeopleOverview />
     </div>
   );
 };

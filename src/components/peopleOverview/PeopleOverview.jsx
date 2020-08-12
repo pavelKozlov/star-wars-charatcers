@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pagination } from '../pagination/index.js';
 import { PeopleList } from '../peopleList/index.js';
-import './dashboard.scss';
+import './peopleOverview.scss';
 
 /**
  * Component that combines pagination and people list.
@@ -9,8 +9,8 @@ import './dashboard.scss';
  * @returns {*}
  * @constructor
  */
-const Dashboard = ({ totalPages, selectedPage, selectPage, peopleItems}) => (
-  <div className="dashboard">
+const PeopleOverview = ({ totalPages, selectedPage, selectPage, peopleItems}) => (
+  <div className="people-overview">
     <Pagination {...{
       totalPages,
       selectedPage,
@@ -21,5 +21,5 @@ const Dashboard = ({ totalPages, selectedPage, selectPage, peopleItems}) => (
 );
 
 export {
-  Dashboard,
+  PeopleOverview,
 }

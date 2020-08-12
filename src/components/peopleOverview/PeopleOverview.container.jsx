@@ -1,15 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPeople } from '../../state/people/people.actions.js';
-import {Dashboard} from './Dashboard.jsx';
+import {PeopleOverview} from './PeopleOverview.jsx';
 
 /**
- * Container component that connects Dashboard component with redux.
+ * Container component that connects redux to PeopleOverview component.
  *
  * @returns {*}
  * @constructor
  */
-const DashboardContainer = () => {
+const PeopleOverviewContainer = () => {
   const peopleItems = useSelector((state) => state.people.value);
 
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const DashboardContainer = () => {
   const selectPage = (pageNumber) => dispatch(fetchPeople(pageNumber));
 
   return (
-    <Dashboard {...{
+    <PeopleOverview {...{
       totalPages,
       selectedPage,
       selectPage,
@@ -27,5 +27,5 @@ const DashboardContainer = () => {
 };
 
 export {
-  DashboardContainer,
+  PeopleOverviewContainer,
 }

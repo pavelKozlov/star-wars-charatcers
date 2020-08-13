@@ -37,7 +37,7 @@ describe('<PeopleOverview/>', () => {
     };
     const wrapper = getWrapper({
       ...paginationProps,
-      peopleItems: [1, 2, 3],
+      peopleItems: [{name: '1'}, {name: '2'}, {name: '3'}],
     });
     expect(wrapper.exists(Pagination)).toBe(true);
     const paginationComponent = wrapper.find(Pagination).first();
@@ -45,7 +45,7 @@ describe('<PeopleOverview/>', () => {
   });
 
   it('should render <PeopleOverview/> component with <PeopleList /> child', () => {
-    const items = [1, 2, 3, 4, 5];
+    const items = [{name: '1'}, {name: '2'}, {name: '3'}, {name: '4'}];
     const wrapper = getWrapper({
       peopleItems: items,
     });

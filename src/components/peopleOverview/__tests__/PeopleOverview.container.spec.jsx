@@ -27,7 +27,7 @@ describe('<PeopleOverview /> container component', () => {
   };
 
   it('should pass people.value redux property to <PeopleList /> component', () => {
-    const listItems = [{name: 1}, {name: 2}, {name: 3}, {name: 4}];
+    const listItems = [{name: '1'}, {name: '2'}, {name: '3'}, {name: '4'}];
     const wrapper = getWrapper({
       value: listItems
     });

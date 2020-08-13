@@ -20,7 +20,6 @@ const fetchPeople = (pageNumber = 1) => async (dispatch) => {
       pageNumber,
     }});
   } catch (e) {
-    console.error(e);
     dispatch({ type: FETCH_PEOPLE_FAILED });
   }
 };

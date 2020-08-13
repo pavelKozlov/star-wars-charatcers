@@ -59,17 +59,6 @@ const parseItem = async (item) =>
 const parseResources = async (data) =>
   Promise.all(data.map((item) => parseItem(item)));
 
-
-/**
- * Get all available resources.
- *
- * @returns {Promise<void>}
- */
-/* const getAvailableResources = async () => {
-  const {data} = await axios.get(`${API_PROTOCOL}://${API_ENDPOINT}/`);
-  console.log({data});
-}; */
-
 /**
  * Get people the list of people from the endpoint.
  *

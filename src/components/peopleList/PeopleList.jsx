@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { PeopleListItem } from './peopleListItem/index.js';
 import './peopleList.scss';
 import { PeopleListHeader } from './peopleListHeader/PeopleListHeader.jsx';
@@ -20,5 +21,13 @@ const PeopleList = ({ items }) => (
     </div>
   </div>
 );
+
+PeopleList.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape(
+      PeopleListItem.propTypes
+    )
+  )
+};
 
 export { PeopleList };

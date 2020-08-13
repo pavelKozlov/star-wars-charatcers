@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './peopleListItem.scss';
 
 const PeopleListItem = ({ name, birthYear, homeWorld, species, firstFilmTitle }) => (
@@ -20,5 +21,13 @@ const PeopleListItem = ({ name, birthYear, homeWorld, species, firstFilmTitle })
     </div>
   </li>
 );
+
+PeopleListItem.propTypes = {
+    name: PropTypes.string,
+    birthYear: PropTypes.string,
+    homeWorld: PropTypes.string,
+    species: PropTypes.string,
+    firstFilmTitle: PropTypes.string,
+};
 
 export { PeopleListItem };

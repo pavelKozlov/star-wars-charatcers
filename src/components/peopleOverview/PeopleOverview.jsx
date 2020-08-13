@@ -20,6 +20,11 @@ const PeopleOverview = ({ totalPages, selectedPage, selectPage, peopleItems }) =
   </div>
 );
 
+PeopleOverview.propTypes = {
+  ...Pagination.propTypes,
+  peopleItems: PeopleList.propTypes.items,
+};
+
 export {
   PeopleOverview,
 }

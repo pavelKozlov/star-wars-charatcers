@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './pagination.scss';
 
@@ -29,6 +30,12 @@ const Pagination = ({totalPages, selectedPage, selectPage}) => {
       </ul>
     </div>
   );
+};
+
+Pagination.propTypes = {
+  totalPages: PropTypes.number.isRequired,
+  selectedPage: PropTypes.number,
+  selectPage: PropTypes.func.isRequired,
 };
 
 export { Pagination };

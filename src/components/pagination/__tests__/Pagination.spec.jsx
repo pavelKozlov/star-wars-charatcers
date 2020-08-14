@@ -1,8 +1,8 @@
 import React from 'react';
-import {shallow} from 'enzyme';
-import {stub} from 'sinon';
+import { shallow } from 'enzyme';
+import { stub } from 'sinon';
 
-import {Pagination} from '../Pagination.jsx';
+import { Pagination } from '../Pagination.jsx';
 
 describe('<Pagination/>', () => {
   let selectPage;

@@ -4,6 +4,13 @@ import { PeopleListItem } from './peopleListItem/index.js';
 import './peopleList.scss';
 import { PeopleListHeader } from './peopleListHeader/PeopleListHeader.jsx';
 
+/**
+ * The component that renders the list of people.
+ *
+ * @param {Array} items - The list of people to render.
+ * @returns {*}
+ * @constructor
+ */
 const PeopleList = ({ items }) => (
   <div className="people-list">
     <PeopleListHeader />

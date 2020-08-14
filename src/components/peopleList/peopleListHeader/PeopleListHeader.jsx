@@ -2,6 +2,12 @@ import React from 'react';
 import './peopleListHeader.scss';
 import '../peopleListItem/peopleListItem.scss';
 
+/**
+ * The component that render a header for people list with column names.
+ *
+ * @returns {*}
+ * @constructor
+ */
 const PeopleListHeader = () => (
   <div className="people-list-header people-list-row">
     <div className="people-list-row__column people-list-row__column-name">

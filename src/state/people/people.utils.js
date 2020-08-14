@@ -29,8 +29,8 @@ const stripPerson = ({name, birth_year, homeworld, species, films}) => ({
 /**
  * Convert all objects in array to the shape used in application.
  *
- * @param {Array} data
- * @returns {*}
+ * @param {Array} data - The array of items to strip.
+ * @returns {Array} - The array of stripped items.
  */
 const stripPeople = (data) =>
   data.map((item) => stripPerson(item));

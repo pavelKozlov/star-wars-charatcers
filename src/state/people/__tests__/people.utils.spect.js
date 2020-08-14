@@ -1,4 +1,6 @@
+import { stub } from 'sinon';
 import {peopleUtils} from '../people.utils.js';
+import { API_ENDPOINT } from '../../../constants/appConstants.js';
 
 const PEOPLE = [{
   name: 'test name',
@@ -83,6 +85,77 @@ describe('peopleUtils', () => {
       const expectedResult = EXPECTED_PEOPLE.map((person) => ({...person}));
       expectedResult[1].firstFilmTitle = '';
       expect(results).toEqual(expectedResult);
+    });
+  });
+
+  describe('parseResources', () => {
+    let resolveResourceStub;
+
+    const resolveImpl = (resource) => `resolved_${resource}`;
+
+    beforeEach(() => {
+      resolveResourceStub = stub().callsFake((resource) =>
+        new Promise((resolve) => resolve(resolveImpl(resource)))
+      );
+    });
+
+    it('should resolve all first-level string and array resources ignoring url prop that match api endpoint', async () => {
+      const DATA = [{
+        testProp1: 'test 1',
+        testProp2: `https://${API_ENDPOINT}/param/2`,
+        testProp3: [
+          'test 3-1',
+          'test 3-2',
+          'test 3-3'
+        ],
+        url: `https://${API_ENDPOINT}/param/url-1`,
+        testProp4: [
+          `https://${API_ENDPOINT}/param/4-1`,
+          `https://${API_ENDPOINT}/param/4-2`,
+        ]
+      }, {
+        testProp1: `https://${API_ENDPOINT}/param/2_1`,
+        testProp2: 'test 2_2',
+        url: 'some-url',
+        testProp3: [
+          `https://${API_ENDPOINT}/param/2_3-1`,
+          `https://${API_ENDPOINT}/param/2_3-2`,
+          `https://${API_ENDPOINT}/param/2_3-3`,
+        ],
+        testProp4: [
+          'test 2_4-1',
+          'test 2_4-2'
+        ]
+      }];
+
+      const expectedData = [{
+        ...DATA[0],
+        testProp2: resolveImpl(DATA[0].testProp2),
+        testProp4: DATA[0].testProp4.map(resolveImpl)
+      }, {
+        ...DATA[1],
+        testProp1: resolveImpl(DATA[1].testProp1),
+        testProp3: DATA[1].testProp3.map(resolveImpl)
+      }];
+
+      expect(await peopleUtils.parseResources(DATA, resolveResourceStub)).toEqual(expectedData);
+      expect(resolveResourceStub.callCount).toBe(7);
+    });
+
+    it('should resolve with empty array if empty array is passed to the method', async () => {
+      expect(await peopleUtils.parseResources([], resolveResourceStub)).toEqual([]);
+    });
+
+    it('should reject if resolveResource rejects', async (done) => {
+      const newResolveResourceStub = stub().callsFake(() => Promise.reject());
+
+      try {
+        await peopleUtils.parseResources([{testProp1: `https://${API_ENDPOINT}/param/1`}], newResolveResourceStub);
+      } catch (e) {
+        done();
+        return;
+      }
+      throw new Error('should reject promise if resolveResource rejects but didnt')
     });
   });
 });

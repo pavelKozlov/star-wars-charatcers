@@ -1,21 +1,20 @@
 import { fetcher } from './fetcher.js';
-import {API_ENDPOINT} from '../constants/appConstants.js';
+import { ENDPOINT_REGEXP } from '../constants/appConstants.js';
 
-// const cache = new Map();
-
-const loadResource = async (resource) => {
-  const regexp = new RegExp(`^http(s)?://${API_ENDPOINT}/`);
-  if (!regexp.test(resource)) {
+/**
+ * Loads resource by url.
+ * If input value doesn't have the same domain as api endpoint, then the promise rejects.
+ *
+ * @param {String} value - The resource url to load.
+ * @returns {Promise}
+ */
+const loadResource = async (value) => {
+  if (!ENDPOINT_REGEXP.test(value)) {
     return Promise.reject();
   }
-  const nakedResource = resource.replace(regexp, '');
+  const nakedResource = value.replace(ENDPOINT_REGEXP, '');
   return fetcher.get(nakedResource)
     .then(({data}) => data);
-  // TODO: use caching
-  /* if (!cache.has(nakedResource)) {
-    cache.set(nakedResource, fetcher.get(nakedResource));
-  }
-  return cache.get(nakedResource); */
 };
 
 /**

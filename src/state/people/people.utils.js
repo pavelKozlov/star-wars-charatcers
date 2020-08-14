@@ -1,9 +1,7 @@
-import { API_ENDPOINT, API_PROTOCOL } from '../../constants/appConstants.js';
+import { ENDPOINT_REGEXP } from '../../constants/appConstants.js';
 
 // The list of props that should not be resolved.
 const PROPS_TO_IGNORE = ['url'];
-
-const ENDPOINT_REGEXP = new RegExp(`^http(s)?:\\/\\/${API_ENDPOINT}/`);
 
 /**
  * Convert person object to the shape used in application.

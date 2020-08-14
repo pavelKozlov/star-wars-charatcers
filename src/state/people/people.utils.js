@@ -1,7 +1,9 @@
-import { API_ENDPOINT } from '../../constants/appConstants.js';
+import { API_ENDPOINT, API_PROTOCOL } from '../../constants/appConstants.js';
 
 // The list of props that should not be resolved.
 const PROPS_TO_IGNORE = ['url'];
+
+const ENDPOINT_REGEXP = new RegExp(`^http(s)?:\\/\\/${API_ENDPOINT}/`);
 
 /**
  * Convert person object to the shape used in application.
@@ -36,6 +38,15 @@ const stripPeople = (data) =>
   data.map((item) => stripPerson(item));
 
 /**
+ * Check if the value starts from the endpoint, thus is a resource that should be resolved.
+ *
+ * @param {String} value - The value to check.
+ * @returns {Boolean} - true if the value matches resource pattern or false otherwise.
+ */
+const isResource = (value) =>
+  ENDPOINT_REGEXP.test(value);
+
+/**
  * Parse and Resolve 1-st level resources in the object.
  * By resources, considering the value that contains a url to api endpoint.
  * The rest of the field are not changing.
@@ -58,7 +69,7 @@ const parseItem = async (item, resolveResource) =>
       if (PROPS_TO_IGNORE.includes(key)) {
         continue;
       }
-      if (typeof value === 'string' && value.includes(API_ENDPOINT)) {
+      if (typeof value === 'string' && isResource(value)) {
         promisesCount++;
         resolveResource(value)
           .then((result) => {
@@ -66,7 +77,7 @@ const parseItem = async (item, resolveResource) =>
             checkCompleteness(1);
           })
           .catch((e) => reject(e));
-      } else if (Array.isArray(value) && value.length > 0 && value[0].includes(API_ENDPOINT)) {
+      } else if (Array.isArray(value) && value.length > 0 && isResource(value[0])) {
         promisesCount += value.length;
 
         Promise.all(value.map((resource) => resolveResource(resource)))

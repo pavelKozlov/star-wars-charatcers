@@ -112,20 +112,22 @@ describe('peopleUtils', () => {
         testProp4: [
           `https://${API_ENDPOINT}/param/4-1`,
           `https://${API_ENDPOINT}/param/4-2`,
-        ]
+        ],
+        testProp5: `https://fake_${API_ENDPOINT}/param/2`,
       }, {
         testProp1: `https://${API_ENDPOINT}/param/2_1`,
         testProp2: 'test 2_2',
         url: 'some-url',
         testProp3: [
-          `https://${API_ENDPOINT}/param/2_3-1`,
-          `https://${API_ENDPOINT}/param/2_3-2`,
-          `https://${API_ENDPOINT}/param/2_3-3`,
+          `http://${API_ENDPOINT}/param/2_3-1`,
+          `http://${API_ENDPOINT}/param/2_3-2`,
+          `http://${API_ENDPOINT}/param/2_3-3`,
         ],
         testProp4: [
           'test 2_4-1',
           'test 2_4-2'
-        ]
+        ],
+        testProp5: `fake_https://${API_ENDPOINT}/param/2`,
       }];
 
       const expectedData = [{
@@ -140,6 +142,57 @@ describe('peopleUtils', () => {
 
       expect(await peopleUtils.parseResources(DATA, resolveResourceStub)).toEqual(expectedData);
       expect(resolveResourceStub.callCount).toBe(7);
+    });
+
+    it('should resolve resources for both http and https protocols', async () => {
+      const DATA = [{
+        testProp1: 'test 1',
+        testProp2: `http://${API_ENDPOINT}/param/2_1`,
+      }, {
+        testProp1: 'test 1_1',
+        testProp2: `https://${API_ENDPOINT}/param/2_2`,
+      }];
+
+      const expectedData = [{
+        ...DATA[0],
+        testProp2: resolveImpl(DATA[0].testProp2),
+      }, {
+        ...DATA[1],
+        testProp2: resolveImpl(DATA[1].testProp2),
+      }];
+
+      expect(await peopleUtils.parseResources(DATA, resolveResourceStub)).toEqual(expectedData);
+      expect(resolveResourceStub.callCount).toBe(2);
+    });
+
+    it('should resolve only resources that starts from the endpoint', async () => {
+      const DATA = [{
+        testProp1: 'test 1',
+        testProp2: `https://${API_ENDPOINT}/param/2`,
+        testProp3: `https://fake_${API_ENDPOINT}/param/3`,
+        testProp4: [
+          `fake_http://${API_ENDPOINT}/param/1_4-1`,
+        ],
+      }, {
+        testProp1: [
+          `fake_http://${API_ENDPOINT}/param/2_1-1`,
+          `fake_http://${API_ENDPOINT}/param/2_1-2`,
+        ],
+        testProp2: [
+          `http://${API_ENDPOINT}/param/2_2-1`,
+        ],
+      }];
+
+      const expectedData = [{
+        ...DATA[0],
+        testProp2: resolveImpl(DATA[0].testProp2),
+      }, {
+        ...DATA[1],
+        testProp2: DATA[1].testProp2.map(resolveImpl)
+      }];
+
+      expect(await peopleUtils.parseResources(DATA, resolveResourceStub)).toEqual(expectedData);
+      expect(resolveResourceStub.callCount).toBe(2);
     });
 
     it('should resolve with empty array if empty array is passed to the method', async () => {

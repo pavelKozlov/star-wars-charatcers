@@ -1,5 +1,5 @@
 import { FETCH_PEOPLE_STARTED, FETCH_PEOPLE_SUCCEEDED, FETCH_PEOPLE_FAILED } from './people.actionConsts.js';
-import { stripPeople } from './people.utils.js';
+import { peopleUtils } from './people.utils.js';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -34,7 +34,7 @@ const reducer = (state = initialState, action) => {
         isLoading: false,
         selectedPage: action.payload.pageNumber,
         totalPages: Math.ceil(action.payload.total / ITEMS_PER_PAGE),
-        value: stripPeople(action.payload.results),
+        value: peopleUtils.stripPeople(action.payload.results),
       };
       break;
     case FETCH_PEOPLE_FAILED:

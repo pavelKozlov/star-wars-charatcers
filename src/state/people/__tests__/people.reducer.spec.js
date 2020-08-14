@@ -1,6 +1,6 @@
 import {reducer } from '../people.reducer.js';
 import { FETCH_PEOPLE_STARTED, FETCH_PEOPLE_SUCCEEDED, FETCH_PEOPLE_FAILED } from '../people.actionConsts.js';
-import { stripPeople } from '../people.utils.js';
+import { peopleUtils } from '../people.utils.js';
 
 const ITEMS = [
   {
@@ -108,7 +108,7 @@ describe('people reducer', () => {
       isLoading: false,
       totalPages: 8,
       selectedPage: 4,
-      value: stripPeople(results)
+      value: peopleUtils.stripPeople(results)
     })
   });
 

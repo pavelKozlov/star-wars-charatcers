@@ -1,6 +1,7 @@
 import {stub} from 'sinon';
 import { swapiService } from '../../../services/swapiService.js';
 import {fetchPeople} from '../people.actions.js';
+import {peopleUtils} from '../people.utils.js';
 import { FETCH_PEOPLE_STARTED, FETCH_PEOPLE_SUCCEEDED, FETCH_PEOPLE_FAILED } from '../people.actionConsts.js';
 
 const ITEMS = [
@@ -46,58 +47,93 @@ describe('people actions', () => {
     dispatchStub = stub();
   });
 
-  describe('fetchData', () => {
+  describe('fetchPeople', () => {
     let getPeopleStub;
+    let loadResourceStub;
+    let parseResourcesStub;
 
     beforeEach(() => {
       getPeopleStub = stub(swapiService, 'getPeople');
+      loadResourceStub = stub(swapiService, 'loadResource').callsFake((resource) => Promise.resolve(`resolved_${resource}`));
+      parseResourcesStub = stub(peopleUtils, 'parseResources').callsFake((data) => Promise.resolve(data));
     });
 
     afterEach(() => {
       getPeopleStub.restore();
+      loadResourceStub.restore();
+      parseResourcesStub.restore();
     });
 
-    it('should call swapiService.getPeople method with no parameters and dispatch FETCH_PEOPLE_SUCCEEDED action when succeeded', async () => {
+    it('should call swapiService.getPeople method with default parameter, then peopleUtils.parseResources with results items parameter and dispatch FETCH_PEOPLE_SUCCEEDED action when succeeded', async () => {
+      const items = ITEMS.slice(1, 3);
       getPeopleStub.resolves({
-        results: ITEMS,
-        total: 83
+        data: {
+          results: items,
+          count: 83
+        }
       });
       await fetchPeople()(dispatchStub);
 
       expect(getPeopleStub.calledOnce).toBe(true);
       expect(getPeopleStub.getCall(0).args[0]).toEqual(1);
+      expect(parseResourcesStub.calledOnce).toBe(true);
+      expect(parseResourcesStub.getCall(0).args[0]).toEqual(items);
       expect(dispatchStub.calledTwice).toBe(true);
       expect(dispatchStub.getCall(0).args[0]).toEqual({type: FETCH_PEOPLE_STARTED});
       expect(dispatchStub.getCall(1).args[0]).toEqual({type: FETCH_PEOPLE_SUCCEEDED, payload: {
-        results: ITEMS,
+        results: items,
           total: 83,
           pageNumber: 1,
         }})
     });
 
-    it('should call swapiService.getPeople method with page number parameters and dispatch FETCH_PEOPLE_SUCCEEDED action when succeeded', async () => {
+    it('should call swapiService.getPeople method with page number parameter, then peopleUtils.parseResources with results items parameter and dispatch FETCH_PEOPLE_SUCCEEDED action when succeeded', async () => {
+      const items = ITEMS.slice(0, 2);
       getPeopleStub.resolves({
-        results: ITEMS,
-        total: 75
+        data: {
+          results: items,
+          count: 75
+        }
       });
       await fetchPeople(4)(dispatchStub);
 
       expect(getPeopleStub.calledOnce).toBe(true);
       expect(getPeopleStub.getCall(0).args[0]).toEqual(4);
+      expect(parseResourcesStub.calledOnce).toBe(true);
+      expect(parseResourcesStub.getCall(0).args[0]).toEqual(items);
       expect(dispatchStub.calledTwice).toBe(true);
       expect(dispatchStub.getCall(0).args[0]).toEqual({type: FETCH_PEOPLE_STARTED});
       expect(dispatchStub.getCall(1).args[0]).toEqual({type: FETCH_PEOPLE_SUCCEEDED, payload: {
-          results: ITEMS,
+          results: items,
           total: 75,
           pageNumber: 4,
         }})
     });
 
-    it('should call swapiService.getPeople method and dispatch FETCH_PEOPLE_FAILED action when failed', async () => {
+    it('should call swapiService.getPeople method and dispatch FETCH_PEOPLE_FAILED action when api call failed', async () => {
       getPeopleStub.rejects();
       await fetchPeople()(dispatchStub);
 
       expect(getPeopleStub.calledOnce).toBe(true);
+      expect(parseResourcesStub.notCalled).toBe(true);
+      expect(dispatchStub.calledTwice).toBe(true);
+      expect(dispatchStub.getCall(0).args[0]).toEqual({type: FETCH_PEOPLE_STARTED});
+      expect(dispatchStub.getCall(1).args[0]).toEqual({type: FETCH_PEOPLE_FAILED})
+    });
+
+    it('should call swapiService.getPeople method and dispatch FETCH_PEOPLE_FAILED action when peopleUtils.parseResources call failed', async () => {
+      getPeopleStub.resolves({
+        data: {
+          results: ITEMS,
+          count: 61
+        }
+      });
+      parseResourcesStub.rejects();
+
+      await fetchPeople()(dispatchStub);
+
+      expect(getPeopleStub.calledOnce).toBe(true);
+      expect(parseResourcesStub.calledOnce).toBe(true);
       expect(dispatchStub.calledTwice).toBe(true);
       expect(dispatchStub.getCall(0).args[0]).toEqual({type: FETCH_PEOPLE_STARTED});
       expect(dispatchStub.getCall(1).args[0]).toEqual({type: FETCH_PEOPLE_FAILED})

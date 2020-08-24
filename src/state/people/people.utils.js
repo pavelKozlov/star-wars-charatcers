@@ -53,39 +53,34 @@ const isResource = (value) =>
  * @param {Function} resolveResource - The function that is called to load resource by url.
  * @returns {Promise}
  */
-const parseItem = async (item, resolveResource) =>
-  new Promise((resolve, reject) => {
-    let promisesCount = 0;
+const parseItem = (item, resolveResource) =>
+  new Promise(async (resolve, reject) => {
+    const promises = [];
+    const localItem = {...item};
 
-    const checkCompleteness = (completedCount) => {
-      promisesCount -= completedCount;
-      if (promisesCount === 0) {
-        resolve(item);
-      }
-    };
     for (let [key, value] of Object.entries(item)) {
       if (PROPS_TO_IGNORE.includes(key)) {
         continue;
       }
       if (typeof value === 'string' && isResource(value)) {
-        promisesCount++;
-        resolveResource(value)
+        promises.push(resolveResource(value)
           .then((result) => {
-            item[key] = result;
-            checkCompleteness(1);
+            localItem[key] = result;
           })
-          .catch((e) => reject(e));
+        );
       } else if (Array.isArray(value) && value.length > 0 && isResource(value[0])) {
-        promisesCount += value.length;
-
-        Promise.all(value.map((resource) => resolveResource(resource)))
-          .then((result) => {
-            item[key] = result;
-            checkCompleteness(value.length);
-          })
-          .catch((e) => reject(e));
+        promises.push(
+          Promise.all(value.map((resource) => resolveResource(resource)))
+            .then((result) => {
+              localItem[key] = result;
+            })
+          )
       }
     }
+
+    Promise.all(promises)
+      .then(() => resolve(localItem))
+      .catch((e) => reject(e));
   });
 
 /**

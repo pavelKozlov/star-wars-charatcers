@@ -1,5 +1,6 @@
 import { fetcher } from './fetcher.js';
 import { ENDPOINT_REGEXP } from '../constants/appConstants.js';
+import { cache } from '../cache.js';
 
 /**
  * Loads resource by url.
@@ -13,8 +14,11 @@ const loadResource = async (value) => {
     return Promise.reject();
   }
   const nakedResource = value.replace(ENDPOINT_REGEXP, '');
-  return fetcher.get(nakedResource)
-    .then(({data}) => data);
+  if (!cache.has(nakedResource)) {
+    const resourcePromise = fetcher.get(nakedResource).then(({data}) => data);
+    cache.set(nakedResource, resourcePromise);
+  }
+  return cache.get(nakedResource);
 };
 
 /**
